@@ -7,6 +7,7 @@ WORKDIR=os.getenv("WORKDIR")
 os.chdir(WORKDIR)
 sys.path.append(WORKDIR)
 
+from operator import itemgetter
 from langchain.prompts import PromptTemplate
 from constants import SYSTEM_PROMPT
 from langchain_core.output_parsers import PydanticOutputParser
@@ -14,10 +15,13 @@ from langchain_core.pydantic_v1 import BaseModel, Field, validator
 from langchain_core.runnables import RunnableLambda
 from typing import Union
 import json
+from langchain_community.callbacks import get_openai_callback
+
 from langchain_openai import ChatOpenAI
 
-with open(f"{WORKDIR}/resume/info.txt","r") as f:
-    resume_info = f.read()
+
+with open(f"{WORKDIR}/resume/info.md","r") as file:
+    resume_info = file.read()
 
 class StructuredLLMOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
@@ -37,7 +41,7 @@ parser = PydanticOutputParser(pydantic_object=StructuredLLMOutput)
 
 
 custom_template = PromptTemplate(
-            template="{system_prompt}\nScenario:\nA candidate is applying for the role: '{role}'\nIt needs to answer the following question: {question}\nUse the following context in order to reply: {resume_info}\nFinally, consider the following JSON schema as output of your response: {format_instructions}",
+            template="{system_prompt}\Problem to solve:\nA candidate is applying for the role: `{role}´\nIt needs to answer this: `{question}´\nUse the following context to formulate your response:```{resume_info}```\n\n Follow these format instructions: ```{format_instructions}```",
             input_variables=["role","question"],
             partial_variables={"format_instructions": parser.get_format_instructions(),
                                "system_prompt": SYSTEM_PROMPT,
@@ -48,16 +52,17 @@ custom_template = PromptTemplate(
 model = ChatOpenAI(model="gpt-4o-mini", 
                     temperature = 0)
 
-
 chain = custom_template \
-            | model \
-                | {
-                    'output': parser \
-                                | RunnableLambda(lambda output: json.loads(output.json())), 
-                    'token_usage': RunnableLambda(lambda input_data: input_data.usage_metadata)
-                }
+                | model \
+                    | {
+                        'output': parser \
+                                    | RunnableLambda(lambda output: json.loads(output.json())), 
+                        'token_usage': RunnableLambda(lambda input_data: input_data.usage_metadata)
+                    }
 
-output = chain.invoke({'role': 'AI Developer',
-              'question':'Why did you want to change your job?'})
-
-print(output)
+with get_openai_callback() as usage_info:
+    output = chain.invoke({'role': 'AI Developer',
+              'question':'Are you open for presencial job?'
+              })
+    print(output)
+    print(usage_info)
