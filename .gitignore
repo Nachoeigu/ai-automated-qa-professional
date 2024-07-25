@@ -1,5 +1,7 @@
 #Custom
 resume/*.md
+resume/*.json
+
 .DS_Store
 
 
