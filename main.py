@@ -14,10 +14,13 @@ from langchain_core.pydantic_v1 import BaseModel, Field, validator
 from langchain_core.runnables import RunnableLambda
 from typing import Union
 import json
+from langchain_community.callbacks import get_openai_callback
+
 from langchain_openai import ChatOpenAI
 
-with open(f"{WORKDIR}/resume/info.txt","r") as f:
-    resume_info = f.read()
+
+with open(f"{WORKDIR}/resume/info.md","r") as file:
+    resume_info = file.read()
 
 class StructuredLLMOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
@@ -57,7 +60,9 @@ chain = custom_template \
                     'token_usage': RunnableLambda(lambda input_data: input_data.usage_metadata)
                 }
 
-output = chain.invoke({'role': 'AI Developer',
-              'question':'Why did you want to change your job?'})
+with get_openai_callback() as usage_info:
+    output = chain.invoke({'role': 'AI Developer',
+              'question':'Did you work with Looker? Highlight one use case'
+              })
 
-print(output)
+    print(usage_info.total_cost)

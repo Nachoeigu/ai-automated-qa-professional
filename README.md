@@ -5,7 +5,7 @@ This software enables you to respond to job-related questions using your persona
 
 # How to set it up?
 
-Create a info.txt file in your resume folder inside this repository. Put the more information as possible about you, your preferences, salary expectation, your work experience, your background, certifications, courses, tools, etc.
+Create a info.md file in your resume folder inside this repository. Put the more information as possible about you, your preferences, salary expectation, your work experience, your background, certifications, courses, tools, etc.
 
-The info.txt file should contains the following sections:
-ABOUT ME, JOB EXPERIENCE, EDUCATION and CERTIFICATIONS AND COURSES.
+The info.md file should contains the following sections:
+ABOUT ME, PREFERENCES, JOB EXPERIENCE, PROJECTS, EDUCATION and CERTIFICATIONS AND COURSES.

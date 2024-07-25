@@ -1,5 +1,5 @@
 #Custom
-resume/*.txt
+resume/*.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
