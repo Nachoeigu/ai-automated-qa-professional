@@ -11,3 +11,7 @@ The info.md file should contains the following sections:
 ABOUT ME, PREFERENCES, JOB EXPERIENCE, PROJECTS, EDUCATION and CERTIFICATIONS AND COURSES.
 
 You can add also two other files in the resume folder like "long_version.md" and "short_version.md" so you can place two version of your resume based on the amount of tokens you want to consume per call.
+
+
+# Methology
+I try to integrate the power of LLMs in order to develop this software that answer job-related question. I think it performs better than RAG methologies based on particular cases I tested.
