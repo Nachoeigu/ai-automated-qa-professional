@@ -21,7 +21,7 @@ if __name__ == '__main__':
     qa_bot = QABot(model = model, qc_bot_chain = qc_bot.chain)
     with get_openai_callback() as usage_info:
         output = qa_bot.chain.invoke({'role': 'AI Developer',
-                'question':'How much would you like to earn in order to change your current job in Euros?'
+                'question':'What is your level of proficiency in English?'
                 })
         print(output)
         print(usage_info)
