@@ -13,7 +13,7 @@ from src.utils import convert_markdown_to_json
 from src.model import QABot, QCBot
 
 if __name__ == '__main__':
-    convert_markdown_to_json(md_file_name = 'long_version.md',
+    convert_markdown_to_json(md_file_name = 'info.md',
                              json_file_name = 'info.json')
 
     model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     qa_bot = QABot(model = model, qc_bot_chain = qc_bot.chain)
     with get_openai_callback() as usage_info:
         output = qa_bot.chain.invoke({'role': 'AI Developer',
-                'question':'What is your level of proficiency in English?'
+                'question':'Which did you study in order to be an AI developer?'
                 })
         print(output)
         print(usage_info)
