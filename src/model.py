@@ -30,7 +30,7 @@ class QABot:
     
     def __developing_template(self):
         self.prompt_template = PromptTemplate(
-                    template="{system_prompt}\Problem to solve:\nA candidate is applying for the role: `{role}´\nIt needs to answer this: `{question}´\nUse the following context to formulate your response:```{resume_info}```\n\n Follow these format instructions: ```{format_instructions}```",
+                    template="{system_prompt}\nProblem to solve:\nA candidate is applying for the role: `{role}´\nIt needs to answer this: `{question}´\nUse the following context to formulate your response:```{resume_info}```\n\n Follow these format instructions: ```{format_instructions}```",
                     input_variables=["role","question","resume_info"],
                     partial_variables={"format_instructions": self.parser.get_format_instructions(),
                                     "system_prompt": QA_SYSTEM_PROMPT,
