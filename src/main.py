@@ -21,7 +21,7 @@ if __name__ == '__main__':
     qa_bot = QABot(model = model, qc_bot_chain = qc_bot.chain)
     with get_openai_callback() as usage_info:
         output = qa_bot.chain.invoke({'role': 'AI Developer',
-                'question':'Which did you study in order to be an AI developer?'
+                'question':'Have you deal with unstructured data? How?'
                 })
         print(output)
         print(usage_info)
