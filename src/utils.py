@@ -50,6 +50,7 @@ def convert_markdown_to_json(md_file_name:str="info.md", json_file_name:str="inf
         json.dump(output_json, file,ensure_ascii=False)
 
 def extracting_relevant_context_from_resume(desired_sections:list):
+    print(f"The relevant sections are: {','.join(desired_sections)}")
     with open(f"{WORKDIR}/resume/info.json","r") as file:
         resume_info = json.loads(file.read())
 
