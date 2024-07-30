@@ -61,5 +61,5 @@ evaluate(
     data="ai_qa_professional_dataset", 
     evaluators=[qa_evaluator],
     metadata={"username": "Nachito"},
-    experiment_prefix='correctness_with_mixtral'
+    experiment_prefix='correctness_in_gpt4o_mini'
 )
