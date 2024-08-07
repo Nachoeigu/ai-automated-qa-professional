@@ -18,8 +18,6 @@ from src.constants import QA_SYSTEM_PROMPT, QC_SYSTEM_PROMPT
 class QABot:
 
     def __init__(self, model, qc_bot_chain):
-        self.model = ChatOpenAI(model="gpt-4o-mini", 
-                    temperature = 0)
         self.model = model.with_structured_output(StructuredQAOutput)
         self.qc_bot_chain = qc_bot_chain
         self.__developing_template()
@@ -44,8 +42,6 @@ class QABot:
         
 class QCBot:
     def __init__(self, model):
-        self.model = ChatOpenAI(model="gpt-4o-mini", 
-                    temperature = 0)
         self.model = model.with_structured_output(StructuredClassifierOutput)
         self.__developing_template()
         self.chain = self.__developing_chain()
