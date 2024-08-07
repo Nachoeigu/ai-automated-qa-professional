@@ -46,9 +46,10 @@ qa_evaluator = LangChainStringEvaluator("qa",
                                         config={"llm": evaluator_model, "prompt": evaluator_prompt})  
 
 def predict_with_llm(input):
-    model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
-    qc_bot = QCBot(model = model)
-    qa_bot = QABot(model = model, qc_bot_chain = qc_bot.chain)
+    qc_model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
+    qa_model = ChatGroq(model = 'llama3-70b-8192', temperature = 0)
+    qc_bot = QCBot(model = qc_model)
+    qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
     output = qa_bot.chain.invoke({'role': 'AI Developer',
             'question':input['question']
             })
