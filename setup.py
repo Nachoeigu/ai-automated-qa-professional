@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
       'langchain_openai',
-      'python-dotenv,
+      'python-dotenv',
       'langchain-community',
       'langsmith'
     ],
