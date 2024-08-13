@@ -21,7 +21,7 @@ class StructuredClassifierOutput(BaseModel):
 
 class StructuredQAOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
-    reply: Union[str, int] = Field(..., description = "The answer of the provided question. If qualitative question, reply as string; if quantitative question reply as integer.")
+    reply: Union[str, int] = Field(..., description = "The answer of the provided question. Three possible ways: If quantitative question, reply as integer; if multiple choice question with options, reply with index enumeration of the correct option. If qualitative question, reply as string.")
 
     @validator('reply')
     def parse_my_field(cls, v):
