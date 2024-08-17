@@ -21,9 +21,15 @@ if __name__ == '__main__':
     qa_model = ChatGroq(model = 'llama3-70b-8192', temperature = 0)
     qc_bot = QCBot(model = qc_model)
     qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
-    with get_openai_callback() as usage_info:
+    questions = [
+        'What is your english level? 0) Basic 1) Intermediate 2) Advanced',
+        'Are you open to hybrid job?',
+        "Do you consider a change if we offer 3000 USD per month?",
+        "how much did you work with Tableau?"
+    ]
+    for question in questions:
         output = qa_bot.chain.invoke({'role': 'AI Developer',
-                'question':'Have you deal with unstructured data? How?'
-                })
+                'question': question
+        })
         print(output)
-        print(usage_info)
+    
