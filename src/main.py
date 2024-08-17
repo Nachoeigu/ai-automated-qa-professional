@@ -17,15 +17,17 @@ if __name__ == '__main__':
     convert_markdown_to_json(md_file_name = 'info.md',
                              json_file_name = 'info.json')
 
-    qc_model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
+    qc_model = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview", temperature = 0)
     qa_model = ChatGroq(model = 'llama3-70b-8192', temperature = 0)
     qc_bot = QCBot(model = qc_model)
     qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
     questions = [
-        'What is your english level? 0) Basic 1) Intermediate 2) Advanced',
-        'Are you open to hybrid job?',
-        "Do you consider a change if we offer 3000 USD per month?",
-        "how much did you work with Tableau?"
+        #'What is your english level? 0) Basic 1) Intermediate 2) Advanced',
+        #'Are you open to hybrid job?',
+        #"Do you consider a change if we offer 3000 USD per month?",
+        #"Cuantos años de experiencia como cientifico de datos usted tiene?",
+        #"Did you work with Software Design?",
+        "¿Cuántos años de experiencia tienes con Python?"
     ]
     for question in questions:
         output = qa_bot.chain.invoke({'role': 'AI Developer',
