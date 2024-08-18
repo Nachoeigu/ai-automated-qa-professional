@@ -19,6 +19,8 @@ if __name__ == '__main__':
 
     qc_model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature = 0)
     qa_model = ChatGroq(model = 'llama3-groq-70b-8192-tool-use-preview', temperature = 0)
+    #qa_model = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0)
+    
     qc_bot = QCBot(model = qc_model)
     qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
     questions = [
@@ -29,6 +31,7 @@ if __name__ == '__main__':
         #"Did you work with Software Design?",
         #"¿Cuántos años de experiencia tienes con Python?",
         #"How many years of work experience do you have with Python (Programming Language)?",
+        #"What's your Salary Expectation? (monthly/USD)",
         #"What is your level of proficiency in English?\nPossible options: 0) Select an option \n 1) None \n 2) Conversational \n 3) Professional \n 4) Native or bilingual\n Retrieve the number of the correct answer",
     ]
     for question in questions:
