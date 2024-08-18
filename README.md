@@ -25,12 +25,12 @@ Create Your Profile: **Go to the "resume" folder in the repository and create an
 
 
 - _ABOUT MY PROFILE_: It is like a brief about how you are, what you do, where you live, and general things regarding you...
-- _TOOLS & SOFTWARE:_ Here you provide your skills or tools and years of experience with each one.
+- _TECHNICAL SKILLS:_ Here you provide your skills or tools and years of experience with each one.
 - _JOB PREFERENCES:_ Any preferencies like salary, remote/on-site preferences, part time/ full time and so on...
 - _JOB EXPERIENCES_: A detail of our your work records and what did you do.
-- _PROJECTS & USE CASES:_ Provide professional and academic projects (from job or personal ones).
+- _PROJECTS:_ Provide professional and academic projects (from job or personal ones).
 - _EDUCATION_: Your background and education.
-- _CERTIFICATIONS & COURSES_: Here provide a detail of your courses you made and also some certifications you may have.
+- _CERTIFICATIONS_: Here provide a detail of your courses you made and also some certifications you may have.
 
 
 

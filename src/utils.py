@@ -17,7 +17,7 @@ from typing import Union, List
 
 class StructuredClassifierOutput(BaseModel):
     """Structuring and classifying the output of the LLM inside categories"""
-    reply: List[Literal['about_my_profile', 'tools_&_software', 'job_preferences', 'job_experiences', 'projects_&_use_cases', 'education', 'certifications_&_courses']] = Field(..., description="The possible sections:\n'about_my_profile': personal details and overview of my professional profile.\n'tools_&_software': tech stack and years of experience with them.\n'job_experiences': professional work history, including companies, responsibilities and accomplishments.\n'job_preferences': desired aspects that defines my interest for the opportunity.\n'projects_&_use_cases': Specific projects I have worked on: project goals, my role, technologies used, and the outcomes of it.\n'education': Detailed list of formal background (degrees & specializations)\n'certifications_&_courses': Professional development programs, online courses, and any credentials earned.")
+    reply: List[Literal['about_my_profile', 'technical_skills', 'job_preferences', 'job_experiences', 'projects', 'education', 'certifications']] = Field(..., description="The possible sections:\n'about_my_profile': personal details and overview of my professional profile.\n'technical_skills': tech stack and years of experience with them.\n'job_experiences': professional work history, including companies, responsibilities and accomplishments.\n'job_preferences': desired aspects that defines my interest for the opportunity.\n'projects': Specific projects I have worked on: project goals, my role, technologies used, and the outcomes of it.\n'education': Detailed list of formal background (degrees & specializations)\n'certifications': Professional development programs, online courses, and any credentials earned.")
 
 class StructuredQAOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
@@ -62,4 +62,4 @@ def extracting_relevant_context_from_resume(desired_sections:list):
 
 
 if __name__ == '__main__':
-    print(StructuredClassifierOutput(reply = ['job_experiences','tools_&_software']))
+    print(StructuredClassifierOutput(reply = ['job_experiences','technical_skills']))

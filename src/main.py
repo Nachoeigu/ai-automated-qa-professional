@@ -17,8 +17,8 @@ if __name__ == '__main__':
     convert_markdown_to_json(md_file_name = 'info.md',
                              json_file_name = 'info.json')
 
-    qc_model = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview", temperature = 0)
-    qa_model = ChatGroq(model = 'llama3-70b-8192', temperature = 0)
+    qc_model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature = 0)
+    qa_model = ChatGroq(model = 'llama3-groq-70b-8192-tool-use-preview', temperature = 0)
     qc_bot = QCBot(model = qc_model)
     qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
     questions = [
@@ -27,7 +27,9 @@ if __name__ == '__main__':
         #"Do you consider a change if we offer 3000 USD per month?",
         #"Cuantos años de experiencia como cientifico de datos usted tiene?",
         #"Did you work with Software Design?",
-        "¿Cuántos años de experiencia tienes con Python?"
+        #"¿Cuántos años de experiencia tienes con Python?",
+        #"How many years of work experience do you have with Python (Programming Language)?",
+        #"What is your level of proficiency in English?\nPossible options: 0) Select an option \n 1) None \n 2) Conversational \n 3) Professional \n 4) Native or bilingual\n Retrieve the number of the correct answer",
     ]
     for question in questions:
         output = qa_bot.chain.invoke({'role': 'AI Developer',
