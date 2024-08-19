@@ -26,7 +26,7 @@ class QABot:
     
     def __developing_template(self):
         self.prompt_template = PromptTemplate(
-                    template="{system_prompt}\nProblem to solve:\nA candidate is applying for the role: `{role}´\nIt needs to answer this: `{question}´\nUse the following context to formulate your response:```{resume_info}```",
+                    template="{system_prompt}\nProblem to solve:\nA candidate is applying for the role: `{role}´\nIt needs to answer this: `{question}´\nUse the following context to formulate your response:\n```{resume_info}```",
                     input_variables=["role","question","resume_info"],
                     partial_variables={
                                     "system_prompt": QA_SYSTEM_PROMPT,

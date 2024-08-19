@@ -10,6 +10,7 @@ sys.path.append(WORKDIR)
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
 from langchain_groq.chat_models import ChatGroq
+from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
 from src.utils import convert_markdown_to_json
 from src.model import QABot, QCBot
 
@@ -19,7 +20,9 @@ if __name__ == '__main__':
 
     qc_model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature = 0)
     qa_model = ChatGroq(model = 'llama3-groq-70b-8192-tool-use-preview', temperature = 0)
-    #qa_model = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0)
+    #qa_model = ChatGoogleGenerativeAI(model = 'gemini-1.5-pro-exp-0801', temperature = 0)
+    
+    #qa_model = ChatOpenAI(model = 'gpt-4o', temperature = 0)
     
     qc_bot = QCBot(model = qc_model)
     qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
@@ -27,7 +30,7 @@ if __name__ == '__main__':
         #'What is your english level? 0) Basic 1) Intermediate 2) Advanced',
         #'Are you open to hybrid job?',
         #"Do you consider a change if we offer 3000 USD per month?",
-        #"Cuantos años de experiencia como cientifico de datos usted tiene?",
+        "Cuantos años de experiencia como cientifico de datos usted tiene?",
         #"Did you work with Software Design?",
         #"¿Cuántos años de experiencia tienes con Python?",
         #"How many years of work experience do you have with Python (Programming Language)?",

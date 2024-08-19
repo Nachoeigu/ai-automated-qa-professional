@@ -27,7 +27,7 @@ class StructuredQAOutput(BaseModel):
     def parse_my_field(cls, v):
         # Check if the value can be converted to an integer
         try:
-            return int(v)
+            return int(float(v))
         except ValueError:
             # If it can't be converted, return it as is (string)
             return v
