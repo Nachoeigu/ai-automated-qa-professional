@@ -33,7 +33,12 @@ class StructuredQAOutput(BaseModel):
             return v
 
 
-def convert_markdown_to_json(md_file_name:str="info.md", json_file_name:str="info.json"):
+def convert_markdown_to_json_if_not_exist(md_file_name:str="info.md", json_file_name:str="info.json"):
+
+    if os.path.exists(f"{WORKDIR}/resume/{json_file_name}"):
+        return 
+
+
     with open(f"{WORKDIR}/resume/{md_file_name}", "r") as file:
         markdown_document = file.read()
     headers_to_split_on = [

@@ -11,11 +11,11 @@ from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
 from langchain_groq.chat_models import ChatGroq
 from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
-from src.utils import convert_markdown_to_json
+from src.utils import convert_markdown_to_json_if_not_exist
 from src.model import QABot, QCBot
 
 if __name__ == '__main__':
-    convert_markdown_to_json(md_file_name = 'info.md',
+    convert_markdown_to_json_if_not_exist(md_file_name = 'info.md',
                              json_file_name = 'info.json')
 
     qc_model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature = 0)
