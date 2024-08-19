@@ -16,51 +16,54 @@ from src.constants import EVALUATOR_SYSTEM_PROMPT
 import json
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
+from src.tests.functions import checking_if_dataset_is_already_created
+from langchain_core.language_models.chat_models import BaseChatModel
 
 
-langsmith_client = Client()
-if "ai_qa_professional_dataset" not in [dataset.name for dataset in langsmith_client.list_datasets()]:
-    langsmith_client.create_dataset(
-        dataset_name = 'ai_qa_professional_dataset',
-        description = 'QA pairs about a professional profile'
-    )
-    with open(f"{WORKDIR}/src/tests/dataset.json", "r") as file:
-        dataset = json.loads(file.read())
+class LangsmithEvaluator:
 
-    questions = [{'question': case['question']} for case in dataset]
-    answers = [{'answer': case['answer']} for case in dataset]
+    def __init__(self, evaluator_model: BaseChatModel):
+        self.langsmith_client = Client()
+        checking_if_dataset_is_already_created(self.langsmith_client)
+        self.qa_evaluator = self.__config_evaluator(evaluator_model)
+        
+    def __config_evaluator(self, evaluator_model):
+        evaluator_prompt = PromptTemplate(
+            input_variables=["input", "reference", "prediction"], template=EVALUATOR_SYSTEM_PROMPT
+        )
+        return LangChainStringEvaluator("qa", 
+                config={"llm": evaluator_model, "prompt": evaluator_prompt}
+                )  
 
-    langsmith_client.create_examples(
-        inputs = questions,
-        outputs = answers,
-        dataset_name="ai_qa_professional_dataset"
-    )
+    def set_testing_models(self, qc_model: BaseChatModel, qa_model: BaseChatModel, desired_metadata:dict, experiment_prefix_name:str):
+        self.desired_metadata = desired_metadata
+        self.experiment_prefix_name = experiment_prefix_name
+        self.qc_bot = QCBot(model = qc_model)
+        self.qa_bot = QABot(model = qa_model, qc_bot_chain = self.qc_bot.chain)
+        
+    def generate_testing_outputs(self):
+        evaluate(
+            lambda input:self.qa_bot.chain.invoke({'role': '', 'question':input['question']}),
+            data="ai_qa_professional_dataset", 
+            evaluators=[self.qa_evaluator],
+            metadata=self.desired_metadata, #{"username": "Nachito"}
+            experiment_prefix= self.experiment_prefix_name #'correctness_in_gpt4o_mini'
+        )
 
-evaluator_model = ChatOpenAI(model='gpt-4o', temperature=0)
-
-evaluator_prompt = PromptTemplate(
-    input_variables=["input", "reference", "prediction"], template=EVALUATOR_SYSTEM_PROMPT
-)
-
-qa_evaluator = LangChainStringEvaluator("qa", 
-                                        config={"llm": evaluator_model, "prompt": evaluator_prompt})  
-
-def predict_with_llm(input):
-    qc_model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
-    qa_model = ChatGroq(model = 'llama3-70b-8192', temperature = 0)
-    qc_bot = QCBot(model = qc_model)
-    qa_bot = QABot(model = qa_model, qc_bot_chain = qc_bot.chain)
-    output = qa_bot.chain.invoke({'role': 'AI Developer',
-            'question':input['question']
-            })
-
-    return output
+        print("Check the results of the testing on Langsmith site...")
+         
 
 
-evaluate(
-    predict_with_llm,
-    data="ai_qa_professional_dataset", 
-    evaluators=[qa_evaluator],
-    metadata={"username": "Nachito"},
-    experiment_prefix='correctness_in_gpt4o_mini'
-)
+if __name__ == '__main__':
+    #Here you put the best model possible:
+    evaluator_model = ChatOpenAI(model = 'chatgpt-4o-latest', temperature = 0)
+    #The models you want to test:
+    qc_model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature = 0)
+    qa_model = ChatGroq(model = 'llama3-groq-70b-8192-tool-use-preview', temperature = 0)
+
+    testing_bot = LangsmithEvaluator(evaluator_model = evaluator_model)
+    testing_bot.set_testing_models(qc_model = qc_model, 
+                                   qa_model = qa_model, 
+                                   desired_metadata={'username': 'Nachiiin'},
+                                   experiment_prefix_name='correctness_llama_3')
+    testing_bot.generate_testing_outputs()
