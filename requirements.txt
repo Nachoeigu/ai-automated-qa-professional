@@ -3,3 +3,4 @@ python-dotenv
 langchain-community
 langsmith
 langchain-google-genai
+langchain-aws
