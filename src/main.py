@@ -21,6 +21,7 @@ if __name__ == '__main__':
                              json_file_name = 'info.json')
 
     qc_model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature = 0)
+    #qc_model = ChatOpenAI(model = 'gpt-4o', temperature = 0)
     #qa_model = ChatGroq(model = 'llama3-groq-70b-8192-tool-use-preview', temperature = 0)
     #qa_model = ChatGoogleGenerativeAI(model = 'gemini-1.5-pro-exp-0801', temperature = 0)
     #qa_model = ChatBedrock(model_id="anthropic.claude-3-sonnet-20240229-v1:0", model_kwargs=dict(temperature=0))

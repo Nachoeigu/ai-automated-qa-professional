@@ -1,6 +1,9 @@
 langchain_openai
+langchain-groq
 python-dotenv
 langchain-community
 langsmith
 langchain-google-genai
 langchain-aws
+fastapi
+uvicorn
