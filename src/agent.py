@@ -11,6 +11,7 @@ from langgraph.graph import StateGraph, END
 from src.utils import State, GraphInput, GraphOutput, GraphConfig
 from langchain_groq.chat_models import ChatGroq
 from src.nodes import *
+import logging
 
 def defining_nodes(workflow: StateGraph):
     workflow.add_node("classifier_bot", categorize_question)
@@ -43,13 +44,13 @@ app = workflow.compile()
 if __name__ == '__main__':
     model = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview", temperature=0)
 
-    output = app.invoke({'question':"Years of experience with Docker?", "role": "AI Engineer"}, 
+    output = app.invoke(
+            input = {'question':"Your current company", "role": "AI Engineer"}, 
             config = {"configurable":{"classifier_model": model,
                                         "section_extractor_model": model,
                                         "qa_model": model,
-                                        "thread_id":1233
                                         }
                         }
             )
 
-    print(output)
+    logging.info(output['answer'])

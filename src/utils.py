@@ -13,11 +13,12 @@ from langchain_text_splitters import MarkdownHeaderTextSplitter
 from pydantic import BaseModel, Field, field_validator
 from typing import Union, Literal, TypedDict
 from typing import Union, List
-from langgraph.graph import StateGraph
+import logging
+
 
 class StructuredQuestionClassifierOutput(BaseModel):
     """Structuring and classifying the output of the LLM inside categories"""
-    reply: Literal['quantitative', 'qualitative', 'multiple-choice'] = Field(..., description="The possible category where the question could be placed.")
+    reply: Literal['quantitative', 'qualitative', 'multiple-choice'] = Field(..., description="Indicates the question type: 'quantitative' for numerical responses, 'qualitative' for descriptive or text responses, or 'multiple-choice' for multiple-choice responses.")
 
 
 class StructuredSectionClassifierOutput(BaseModel):
@@ -71,7 +72,7 @@ def convert_markdown_to_json_if_not_exist(md_file_name:str="info.md", json_file_
 
 def extracting_relevant_context_from_resume(desired_sections:list):
     convert_markdown_to_json_if_not_exist()
-    print(f"The relevant sections are: {','.join(desired_sections)}")
+    logging.info(f"The relevant sections are: {','.join(desired_sections)}")
     with open(f"{WORKDIR}/resume/info.json","r") as file:
         resume_info = json.loads(file.read())
 

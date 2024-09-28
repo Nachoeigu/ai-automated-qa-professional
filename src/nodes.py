@@ -9,7 +9,7 @@ sys.path.append(WORKDIR)
 
 from src.utils import State
 from src.model import QABot, QuestionClassifierBot, SectionClassifierBot
-from src.utils import extracting_relevant_context_from_resume, GraphConfig
+from src.utils import GraphConfig
 
 def categorize_question(state: State, config: GraphConfig) -> State:
     """
