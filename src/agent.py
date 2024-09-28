@@ -41,7 +41,7 @@ app = workflow.compile()
 
 
 if __name__ == '__main__':
-    model = ChatGroq(model="llama3-groq-70b-8192-tool-use-preview", temperature=0)
+    model = ChatGroq(model="llama3-groq-8b-8192-tool-use-preview", temperature=0)
 
     output = app.invoke({'question':"Years of experience with Docker?", "role": "AI Engineer"}, 
             config = {"configurable":{"classifier_model": model,

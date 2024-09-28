@@ -70,6 +70,7 @@ def convert_markdown_to_json_if_not_exist(md_file_name:str="info.md", json_file_
         json.dump(output_json, file,ensure_ascii=False)
 
 def extracting_relevant_context_from_resume(desired_sections:list):
+    convert_markdown_to_json_if_not_exist()
     print(f"The relevant sections are: {','.join(desired_sections)}")
     with open(f"{WORKDIR}/resume/info.json","r") as file:
         resume_info = json.loads(file.read())
@@ -84,7 +85,7 @@ class State(TypedDict):
     question: str
     role: str
     question_type: Literal['quantitative','qualitative','multiple-choice']
-    sections: List[Literal['about_my_profile', 'technical_skills', 'job_preferences', 'job_experiences', 'projects', 'education', 'certifications']]
+    relevant_context: str
     answer: Union[str, int]
 
 class GraphInput(TypedDict):
