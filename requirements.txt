@@ -1,10 +1,11 @@
-langchain_openai
+#langchain_openai
 langchain-groq
 python-dotenv
-langchain-community
-langsmith
-langchain-google-genai
-langchain-aws
+#langsmith
+#langchain-google-genai
+#langchain-aws
+langchain
 fastapi
 uvicorn
-langchain-cerebras
+langgraph
+#langchain-cerebras

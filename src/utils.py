@@ -26,15 +26,15 @@ class StructuredSectionClassifierOutput(BaseModel):
 
 class StructuredQualitativeQAOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
-    reply: str = Field(..., description = "The answer of the question based on the provided context.")
+    reply: str = Field(..., description = "The answer of the question based on the provided context. If you don´t know it, return empty string")
 
 class StructuredQuantitativeQAOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
-    reply: int = Field(..., description = "The answer of the question based on the provided context.")
+    reply: int = Field(..., description = "The answer of the question based on the provided context. If you don´t know it, return -9999")
 
 class StructuredMultipleChoiceQAOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
-    reply: List[int] = Field(..., description = "A list where each element is the number that reffers the correct answer. If only one answer correct, list of 1 element. Otherwise, list of N elements where N is the amount of correct answers.")
+    reply: List[int] = Field(..., description = "A list where each element is the number that reffers the correct answer. If only one answer correct, list of 1 element. Otherwise, list of N elements where N is the amount of correct answers. If you don´t know it, return [-9999]")
 
     @field_validator('reply')
     def parse_my_field(cls, values):

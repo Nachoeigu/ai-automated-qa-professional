@@ -18,7 +18,7 @@ def categorize_question(state: State, config: GraphConfig) -> State:
     bot = QuestionClassifierBot(model = config['configurable']['classifier_model'])
     classification = bot(question = state['question'])
     
-    return {'question_type': classification['reply']}
+    return {'question_type': classification.reply}
 
 def get_section_for_question(state: State, config: GraphConfig) -> State:
     """
@@ -40,4 +40,4 @@ def reply(state: State, config: GraphConfig) -> State:
                 resume_info=state['relevant_context']
             )
     
-    return {'answer': answer['reply']}
+    return {'answer': answer.reply}

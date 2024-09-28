@@ -53,7 +53,7 @@ class SectionClassifierBot:
     def __init__(self, model):
         self.model = model.with_structured_output(StructuredSectionClassifierOutput)
         self.system_prompt = SC_SYSTEM_PROMPT
-        self.chain = self.model | RunnableLambda(lambda qc_answer: extracting_relevant_context_from_resume(qc_answer['reply']))
+        self.chain = self.model | RunnableLambda(lambda qc_answer: extracting_relevant_context_from_resume(qc_answer.reply))
 
     def __call__(self, question:str):
         messages = [SystemMessage(content = self.system_prompt),
