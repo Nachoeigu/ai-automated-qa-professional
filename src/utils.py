@@ -15,7 +15,6 @@ from typing import Union, Literal, TypedDict
 from typing import Union, List
 import logging
 
-
 class StructuredQuestionClassifierOutput(BaseModel):
     """Structuring and classifying the output of the LLM inside categories"""
     reply: Literal['quantitative', 'qualitative', 'multiple-choice'] = Field(..., description="Indicates the question type: 'quantitative' for numerical responses, 'qualitative' for descriptive or text responses, or 'multiple-choice' for multiple-choice responses.")

@@ -13,6 +13,15 @@ from langchain_groq.chat_models import ChatGroq
 from src.nodes import *
 import logging
 
+logging.basicConfig(filename="message.log", 
+                    format='%(asctime)s: %(levelname)s: %(message)s', 
+                    level=logging.INFO)
+
+# Add console handler (stream output)
+logging.getLogger().addHandler(logging.StreamHandler())
+
+
+
 def defining_nodes(workflow: StateGraph):
     workflow.add_node("classifier_bot", categorize_question)
     workflow.add_node("section_extractor_bot", get_section_for_question)

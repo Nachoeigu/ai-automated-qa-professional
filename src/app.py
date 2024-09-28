@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from src.agent import app as ai_agent
 from langchain_groq.chat_models import ChatGroq
+import logging
+
+logger = logging.getLogger()
+
 
 app = FastAPI()
 model = ChatGroq(model="llama-3.1-8b-instant", temperature=0)

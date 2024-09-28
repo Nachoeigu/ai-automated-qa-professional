@@ -4,6 +4,7 @@ resume/*.json
 src/tests/dataset.json
 .DS_Store
 .vscode/
+testing.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
