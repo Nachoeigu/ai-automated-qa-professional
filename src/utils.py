@@ -8,30 +8,45 @@ os.chdir(WORKDIR)
 sys.path.append(WORKDIR)
 
 import json
+from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_text_splitters import MarkdownHeaderTextSplitter
-from langchain_core.pydantic_v1 import BaseModel, Field, validator, conlist
-from typing import Union, Literal
-from langchain_core.pydantic_v1 import BaseModel, Field, conlist, constr
+from pydantic import BaseModel, Field, field_validator
+from typing import Union, Literal, TypedDict
 from typing import Union, List
+from langgraph.graph import StateGraph
 
-
-class StructuredClassifierOutput(BaseModel):
+class StructuredQuestionClassifierOutput(BaseModel):
     """Structuring and classifying the output of the LLM inside categories"""
-    reply: List[Literal['about_my_profile', 'technical_skills', 'job_preferences', 'job_experiences', 'projects', 'education', 'certifications']] = Field(..., description="The possible sections:\n'about_my_profile': personal details and overview of my professional profile.\n'technical_skills': tech stack and years of experience with them.\n'job_experiences': professional work history, including companies, responsibilities and accomplishments.\n'job_preferences': desired aspects that defines my interest for the opportunity.\n'projects': Specific projects I have worked on: project goals, my role, technologies used, and the outcomes of it.\n'education': Detailed list of formal background (degrees & specializations)\n'certifications': Professional development programs, online courses, and any credentials earned.")
+    reply: Literal['quantitative', 'qualitative', 'multiple-choice'] = Field(..., description="The possible category where the question could be placed.")
 
-class StructuredQAOutput(BaseModel):
+
+class StructuredSectionClassifierOutput(BaseModel):
+    """Structuring and classifying the output of the LLM inside categories"""
+    reply: List[Literal['about_my_profile', 'technical_skills', 'job_preferences', 'job_experiences', 'projects', 'education', 'certifications']] = Field(..., description="The possible sections:\n'about_my_profile': personal details and overview of my professional profile.\n'technical_skills': tech stack and years of experience with them.\n'job_experiences': professional work history, including companies, responsibilities and accomplishments.\n'job_preferences': desired aspects that defines my interest for the opportunity.\n'projects': Specific projects I have worked on: project goals, role, technologies used, and the outcomes of it.\n'education': Detailed list of formal background (degrees & specializations)\n'certifications': Professional development programs, online courses, and any credentials earned.")
+
+class StructuredQualitativeQAOutput(BaseModel):
     """Structuring the output of the LLM in Pydantic format"""
-    reply: Union[str, int] = Field(..., description = "The answer of the provided question. Three possible ways: If quantitative question, reply as integer; if multiple choice question with options, reply with index enumeration of the correct option. If qualitative question, reply as string.")
+    reply: str = Field(..., description = "The answer of the question based on the provided context.")
 
-    @validator('reply')
-    def parse_my_field(cls, v):
-        # Check if the value can be converted to an integer
-        try:
-            return int(float(v))
-        except ValueError:
-            # If it can't be converted, return it as is (string)
-            return v
+class StructuredQuantitativeQAOutput(BaseModel):
+    """Structuring the output of the LLM in Pydantic format"""
+    reply: int = Field(..., description = "The answer of the question based on the provided context.")
 
+class StructuredMultipleChoiceQAOutput(BaseModel):
+    """Structuring the output of the LLM in Pydantic format"""
+    reply: List[int] = Field(..., description = "A list where each element is the number that reffers the correct answer. If only one answer correct, list of 1 element. Otherwise, list of N elements where N is the amount of correct answers.")
+
+    @field_validator('reply')
+    def parse_my_field(cls, values):
+        # Check if the values can be converted to an integer
+        for value in values:
+            try:
+                int(float(value))
+            except ValueError:
+                # If it can't be converted, return it as is (string)
+                return value
+
+        return [int(float(value)) for value in values]
 
 def convert_markdown_to_json_if_not_exist(md_file_name:str="info.md", json_file_name:str="info.json"):
 
@@ -65,6 +80,22 @@ def extracting_relevant_context_from_resume(desired_sections:list):
 
     return relevant_context
 
+class State(TypedDict):
+    question: str
+    role: str
+    question_type: Literal['quantitative','qualitative','multiple-choice']
+    sections: List[Literal['about_my_profile', 'technical_skills', 'job_preferences', 'job_experiences', 'projects', 'education', 'certifications']]
+    answer: Union[str, int]
 
-if __name__ == '__main__':
-    print(StructuredClassifierOutput(reply = ['job_experiences','technical_skills']))
+class GraphInput(TypedDict):
+    question: str
+    role: str
+
+class GraphOutput(TypedDict):
+    answer: Union[str, int]
+
+class GraphConfig(TypedDict):
+    classifier_model: BaseChatModel
+    section_extractor_model: BaseChatModel
+    qa_model: BaseChatModel
+

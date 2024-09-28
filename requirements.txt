@@ -7,3 +7,4 @@ langchain-google-genai
 langchain-aws
 fastapi
 uvicorn
+langchain-cerebras
