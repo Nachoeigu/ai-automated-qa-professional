@@ -17,9 +17,7 @@ logging.basicConfig(filename="message.log",
                     format='%(asctime)s: %(levelname)s: %(message)s', 
                     level=logging.INFO)
 
-# Add console handler (stream output)
 logging.getLogger().addHandler(logging.StreamHandler())
-
 
 
 def defining_nodes(workflow: StateGraph):

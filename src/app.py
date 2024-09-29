@@ -1,18 +1,28 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+import os
 from pydantic import BaseModel
 from src.agent import app as ai_agent
 from langchain_groq.chat_models import ChatGroq
 import logging
 
 logger = logging.getLogger()
-
-
-app = FastAPI()
 model = ChatGroq(model="llama-3.1-8b-instant", temperature=0)
 
 class DataInput(BaseModel):
     question: str
     role: str
+    
+app = FastAPI()
+
+@app.middleware("http")
+async def api_key_middleware(request: Request, call_next):
+    api_key = request.headers.get("apikey")
+    if api_key != os.getenv("FASTAPI_API_KEY"):
+        raise HTTPException(status_code=403, detail="Forbidden: Invalid API Key")
+    response = await call_next(request)
+    return response
+
+
 
 @app.post("/ask")
 async def ask_question(info_input: DataInput):
